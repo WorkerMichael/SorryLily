@@ -1,57 +1,50 @@
-import tkinter as tk
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sorry Lily</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: sans-serif; background-color: #f9f9f9; }
+        #lily-container { position: relative; width: 300px; height: 400px; }
+        .stem { position: absolute; bottom: 0; left: 145px; width: 10px; height: 250px; background: #2d5a27; border-radius: 5px; }
+        .center { position: absolute; top: 135px; left: 135px; width: 40px; height: 40px; background: #ffd700; border-radius: 50%; z-index: 10; border: 2px solid #ccac00; }
+        .petal { position: absolute; width: 60px; height: 100px; background: #ffcce7; border: 2px solid #ff80bf; border-radius: 50% 50% 50% 50%; cursor: pointer; transition: transform 0.2s; }
+        .petal:hover { background: #ffb3db; }
+        /* Petal Rotations */
+        .p1 { top: 50px; left: 125px; transform-origin: bottom; }
+        .p2 { top: 75px; left: 185px; transform: rotate(60deg); transform-origin: bottom left; }
+        .p3 { top: 165px; left: 185px; transform: rotate(120deg); transform-origin: top left; }
+        .p4 { top: 200px; left: 125px; transform-origin: top; }
+        .p5 { top: 165px; left: 65px; transform: rotate(-120deg); transform-origin: top right; }
+        .p6 { top: 75px; left: 65px; transform: rotate(-60deg); transform-origin: bottom right; }
+        #message { margin-top: 20px; font-size: 24px; color: #d90429; font-weight: bold; min-height: 30px; }
+    </style>
+</head>
+<body>
 
-class SorryLily:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("The Sorry Lily")
-        self.root.geometry("400x500")
-        
-        self.canvas = tk.Canvas(root, width=400, height=400, bg="white", highlightthickness=0)
-        self.canvas.pack()
-        
-        self.status_label = tk.Label(root, text="Click a petal...", font=("Helvetica", 14))
-        self.status_label.pack(pady=20)
+    <div id="lily-container">
+        <div class="stem"></div>
+        <div class="petal p1" onclick="removePetal(this)"></div>
+        <div class="petal p2" onclick="removePetal(this)"></div>
+        <div class="petal p3" onclick="removePetal(this)"></div>
+        <div class="petal p4" onclick="removePetal(this)"></div>
+        <div class="petal p5" onclick="removePetal(this)"></div>
+        <div class="petal p6" onclick="removePetal(this)"></div>
+        <div class="center"></div>
+    </div>
+    
+    <div id="message"></div>
+    <button onclick="location.reload()" style="margin-top: 20px; cursor: pointer;">Regrow Lily</button>
 
-        self.draw_lily()
-
-        # Reset Button
-        self.reset_btn = tk.Button(root, text="Regrow Lily", command=self.draw_lily)
-        self.reset_btn.pack()
-
-    def draw_lily(self):
-        self.canvas.delete("all")
-        cx, cy = 200, 200
-        
-        # Stem
-        self.canvas.create_line(cx, cy, cx, 400, fill="#2d5a27", width=6)
-        
-        # Petal Positions (x1, y1, x2, y2)
-        petal_coords = [
-            (180, 100, 220, 200), # Top
-            (220, 130, 310, 210), # Top Right
-            (230, 210, 310, 290), # Bottom Right
-            (180, 230, 220, 330), # Bottom
-            (90, 210, 170, 290),  # Bottom Left
-            (90, 130, 180, 210),  # Top Left
-        ]
-        
-        for coord in petal_coords:
-            petal = self.canvas.create_oval(coord, fill="#ffcce7", outline="#ff80bf", width=2)
-            # Bind click event
-            self.canvas.tag_bind(petal, '<Button-1>', lambda e, p=petal: self.apologize(p))
+    <script>
+        function removePetal(element) {
+            element.style.display = 'none';
+            document.getElementById('message').innerText = 'Sorry';
+            console.log('Sorry');
             
-        # Center of the Lily
-        self.canvas.create_oval(185, 185, 215, 215, fill="#ffd700", outline="#ccac00")
-
-    def apologize(self, petal_id):
-        self.canvas.delete(petal_id)
-        print("Sorry") # Console output
-        self.status_label.config(text="Sorry", fg="#d90429")
-        
-        # Fade the "Sorry" text back to neutral after 800ms
-        self.root.after(800, lambda: self.status_label.config(text="...", fg="gray"))
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = SorryLily(root)
-    root.mainloop()
+            setTimeout(() => {
+                document.getElementById('message').innerText = '';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
